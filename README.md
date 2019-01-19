@@ -15,3 +15,5 @@ A simple plugin to cache WP Rest API Requests.
 ## Installation ##
 
 ## Changelog ##
+
+Please see CHANGELOG.MD
