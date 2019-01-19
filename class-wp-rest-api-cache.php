@@ -185,7 +185,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 				if ( null !== $cache_timeout ) {
 
-					if ( ! empty( $timezone_string ) || '' !== $timezone_string ) {
+					if ( ! empty( $timezone_string ) || '' !== $timezone_string || null !== $timezone_string ) {
 						date_default_timezone_set( $timezone_string );
 					}
 
