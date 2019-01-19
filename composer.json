@@ -10,6 +10,8 @@
       "homepage": "https://brandonhubbard.com"
     }
   ],
+  "type": "wordpress-plugin",
+  "minimum-stability": "dev",
   "require": {
     "php": ">=7.0",
     "composer/installers": "~1.0"
