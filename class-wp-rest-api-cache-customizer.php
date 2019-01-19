@@ -26,6 +26,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		public function __construct() {
 				add_action( 'customize_register', array( $this, 'register' ) );
 		}
+
 		/**
 		 * Register.
 		 *
@@ -83,9 +84,10 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 			$wp_customize->add_setting(
 				'rest_api_cache[default_timeout]',
 				array(
-					'default'   => '300',
-					'type'      => 'option',
-					'transport' => 'refresh',
+					'default'           => 300,
+					'type'              => 'option',
+					'transport'         => 'refresh',
+					'sanitize_callback' => array( $this, 'sanitize_default_timeout' ),
 				)
 			);
 
@@ -94,7 +96,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 				'rest_api_cache_default_timeout',
 				array(
 					'label'       => __( 'Default Timeout', 'wp-rest-api-cache' ),
-					'description' => __( 'Set the default timeout in seconds.', 'wp-rest-api-cache' ),
+					'description' => __( 'Set the default timeout in seconds. <br/> Default: 300 (5 Minutes) <br/> Max: 604800 (7 Days)', 'wp-rest-api-cache' ),
 					'type'        => 'number',
 					'section'     => 'rest_api_cache_settings_section',
 					'settings'    => 'rest_api_cache[default_timeout]',
@@ -105,6 +107,22 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					),
 				)
 			);
+
+		}
+
+		/**
+		 * Sanitize Default Timeout.
+		 *
+		 * @access public
+		 * @param mixed $default_timeout Default Timeout.
+		 */
+		public function sanitize_default_timeout( $default_timeout ) {
+
+			if ( is_numeric( $default_timeout ) && $default_timeout < 604800 ) {
+				return $default_timeout;
+			} else {
+				 return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'wp-rest-api-cache' ) );
+			}
 
 		}
 	}
