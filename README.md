@@ -14,10 +14,19 @@ A simple plugin to cache WP Rest API Requests.
 
 This plugin enables caching for the WordPress REST API to improve performance. Once enabled you can modify the basic settings via the Customizer.
 
-** Available Options **
+** Customizer Options **
 
 * Disable Cache
 * Default Cache Timeout
+
+Several Headers are added to all the API Requests. Here is an example of the available headers.
+
+```
+X-WP-API-CACHE: Cached
+X-WP-API-CACHE-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
+X-WP-API-CACHE-TIMEOUT: January 20, 2019, 12:02 AM UTC
+X-WP-API-CACHE-TIMEOUT-DIFF: 5 mins
+```
 
 
 ## Installation ##

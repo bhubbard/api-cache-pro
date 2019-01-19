@@ -51,7 +51,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 			$wp_customize->add_section(
 				'rest_api_cache_settings_section',
 				array(
-					'title'       => __( 'Settings', 'wp-rest-api-cache' ),
+					'title'       => __( 'General Settings', 'wp-rest-api-cache' ),
 					'description' => __( 'Fill out the following cache settings for rest api.', 'wp-rest-api-cache' ),
 					'priority'    => 500,
 					'panel'       => 'rest_api_cache_panel',
