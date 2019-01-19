@@ -8,15 +8,15 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
-	
+if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
+
 	require_once ABSPATH . WPINC . '/class-wp-customize-control.php';
-	
+
 	/**
 	 * WP_REST_API_Cache_Customizer
 	 */
 	class WP_REST_API_Cache_Customizer {
-	
+
 		/**
 		 * Constructing a customizing running lemming.
 		 *
@@ -34,7 +34,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		 * @return void
 		 */
 		function register( $wp_customize ) {
-	
+
 			// Rest API Cache Panel.
 			$wp_customize->add_panel(
 				'rest_api_cache_panel',
@@ -46,7 +46,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'description'    => __( 'Set Rest API Cache.', 'wp-rest-api-cache' ),
 				)
 			);
-	
+
 			// Settings Section.
 			$wp_customize->add_section(
 				'rest_api_cache_settings_section',
@@ -57,7 +57,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'panel'       => 'rest_api_cache_panel',
 				)
 			);
-	
+
 			// Disable Settings.
 			$wp_customize->add_setting(
 				'rest_api_cache[disable]',
@@ -67,7 +67,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'transport' => 'refresh',
 				)
 			);
-			
+
 			// Disable Controls.
 			$wp_customize->add_control(
 				'rest_api_cache_disable',
@@ -79,7 +79,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'settings'    => 'rest_api_cache[disable]',
 				)
 			);
-			
+
 			// Timeout Settings.
 			$wp_customize->add_setting(
 				'rest_api_cache[default_timeout]',
@@ -89,7 +89,7 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'transport' => 'refresh',
 				)
 			);
-			
+
 			// Timeout Controls.
 			$wp_customize->add_control(
 				'rest_api_cache_default_timeout',
@@ -100,16 +100,16 @@ if( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					'section'     => 'rest_api_cache_settings_section',
 					'settings'    => 'rest_api_cache[default_timeout]',
 					'input_attrs' => array(
-				        'min'   => 0,
-				        'max'   => 604800, // Max of 7 Days in Seconds.
-				        'step'  => 1,
-				    ),
+						'min'  => 0,
+						'max'  => 604800, // Max of 7 Days in Seconds.
+						'step' => 1,
+					),
 				)
 			);
-	
+
 		}
 	}
-	
+
 	new WP_REST_API_Cache_Customizer();
-	
+
 }
