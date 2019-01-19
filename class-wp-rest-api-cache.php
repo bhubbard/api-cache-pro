@@ -240,9 +240,11 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 			$results = $wpdb->query(
 				$wpdb->prepare(
-					"DELETE FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s",
+					"DELETE FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
 					'_transient_rest_api_cache_%',
-					'_transient_timeout_rest_api_cache_%'
+					'_transient_timeout_rest_api_cache_%',
+					'_site_transient_rest_api_cache_%',
+					'_site_transient_timeout_rest_api_cache_%'
 				)
 			);
 
