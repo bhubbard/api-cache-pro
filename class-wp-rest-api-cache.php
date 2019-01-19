@@ -185,7 +185,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				if ( null !== $cache_timeout ) {
 
 					// Set Transient Timeout & Diff.
-					$transient_timeout = date( 'F j, Y, g:i A', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
+					$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
 					$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
 
 					// Send Cache Timeout Header.
