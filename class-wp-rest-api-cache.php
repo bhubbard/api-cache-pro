@@ -7,6 +7,8 @@
  * Version: 0.0.1
  * Plugin URI: https://github.com/bhubbard/blah
  * License: GPL3+
+ *
+ * @package wp-rest-api-cache
  */
 
 // Exit if accessed directly.
@@ -170,7 +172,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				// Display Key Header.
 				$display_key_header = true;
 				$display_cache_key  = apply_filters( 'rest_cache_display_key_header', $display_key_header );
-				if ( $display_cache_key === true ) {
+				if ( true === $display_cache_key ) {
 					 $server->send_header( 'X-WP-API-CACHE-KEY', $cache_key );
 				}
 
@@ -226,6 +228,11 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 			}
 		}
 
+		/**
+		 * Delete All Cache.
+		 *
+		 * @access public
+		 */
 		public function delete_all_cache() {
 
 		}
