@@ -12,7 +12,18 @@ A simple plugin to cache WP Rest API Requests.
 
 ## Description ##
 
+This plugin enables caching for the WordPress REST API to improve performance. Once enabled you can modify the basic settings via the Customizer.
+
+** Available Options **
+
+* Disable Cache
+* Default Cache Timeout
+
+
 ## Installation ##
+
+1. Copy the `wp-rest-api-cache` folder into your `wp-content/plugins` folder
+2. Activate the `WP REST API Cache` plugin via the plugin admin page
 
 ## Changelog ##
 
