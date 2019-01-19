@@ -43,6 +43,9 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 			}
 
+			// Delete All Cache on Deactivation.
+			register_deactivation_hook( __FILE__, array( $this, 'delete_all_cache' ) );
+
 		}
 
 		/**
@@ -94,7 +97,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 			$timeout = apply_filters( 'rest_api_cache_timeout', $this->get_timeout() );
 
 			if ( null !== $request_uri ) {
-				$cache_key = $this->cache_key( $request_uri );
+				$cache_key = $this->cache_key( $request_uri ) ?? null;
 			} else {
 				$cache_key = null;
 				return $response;
@@ -158,7 +161,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 			$cache_key = $this->cache_key( $request_uri ) ?? '';
 
 			// Check for Cache from Transient.
-			if ( ! empty( $cache_key ) || '' !== $cache_key ) {
+			if ( ! empty( $cache_key ) || '' !== $cache_key || null !== $cache_key ) {
 				$cache_results = get_transient( $cache_key );
 			} else {
 				$cache_results = false;
@@ -232,6 +235,21 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		 * @access public
 		 */
 		public function delete_all_cache() {
+
+			global $wpdb;
+
+			$results = $wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s",
+					'_transient_rest_api_cache_%',
+					'_transient_timeout_rest_api_cache_%'
+				)
+			);
+
+			// Sometimes Transient are not in DB. So Flush.
+			$flush_cache = wp_cache_flush();
+
+			return $results;
 
 		}
 

@@ -62,9 +62,10 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 			$wp_customize->add_setting(
 				'rest_api_cache[disable]',
 				array(
-					'default'   => false,
-					'type'      => 'option',
-					'transport' => 'refresh',
+					'default'           => false,
+					'type'              => 'option',
+					'transport'         => 'refresh',
+					'sanitize_callback' => array( $this, 'sanitize_disable_cache' ),
 				)
 			);
 
@@ -73,7 +74,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 				'rest_api_cache_disable',
 				array(
 					'label'       => __( 'Disable Cache', 'wp-rest-api-cache' ),
-					'description' => __( 'Check this box if you wish to disable the WP Rest API Cache.', 'wp-rest-api-cache' ),
+					'description' => __( 'Check this box if you wish to disable the WP Rest API Cache. All current cache will be cleared if enabled.', 'wp-rest-api-cache' ),
 					'type'        => 'checkbox',
 					'section'     => 'rest_api_cache_settings_section',
 					'settings'    => 'rest_api_cache[disable]',
@@ -107,6 +108,23 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 					),
 				)
 			);
+
+		}
+
+		/**
+		 * Sanitize Disable Cache.
+		 *
+		 * @access public
+		 * @param mixed $disable_cache Disable Cache.
+		 */
+		public function sanitize_disable_cache( $disable_cache ) {
+
+			if ( true === $disable_cache ) {
+				$cache = new WP_REST_API_CACHE();
+				$cache->delete_all_cache();
+			}
+
+			return $disable_cache;
 
 		}
 
