@@ -2,7 +2,11 @@
 	"name": "WP Rest API Cache",
 	"description": "A simple plugin to cache WP Rest API Requests.",
 	"version": "0.0.1",
-	"keywords": [],
+	"keywords": [
+		"wordpress",
+		"rest-api",
+		"caching"
+	],
 	"authors": [
     {
       "name": "Brandon Hubbard",
