@@ -97,7 +97,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 				'rest_api_cache_default_timeout',
 				array(
 					'label'       => __( 'Default Timeout', 'wp-rest-api-cache' ),
-					'description' => __( 'Set the default timeout in seconds. <br/> Default: 300 (5 Minutes) <br/> Max: 604800 (7 Days)', 'wp-rest-api-cache' ),
+					'description' => __( 'Set the default timeout in seconds. All current cache will be cleared if updated. <br /><br /> Default: 300 (5 Minutes) <br /> Max: 604800 (7 Days)', 'wp-rest-api-cache' ),
 					'type'        => 'number',
 					'section'     => 'rest_api_cache_settings_section',
 					'settings'    => 'rest_api_cache[default_timeout]',
@@ -137,7 +137,13 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		public function sanitize_default_timeout( $default_timeout ) {
 
 			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 ) {
+
+				// Flush Cache to respect new timeouts.
+				$cache = new WP_REST_API_CACHE();
+				$cache->delete_all_cache();
+
 				return $default_timeout;
+
 			} else {
 				return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'wp-rest-api-cache' ) );
 			}
