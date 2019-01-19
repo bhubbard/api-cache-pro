@@ -121,7 +121,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 			if ( is_numeric( $default_timeout ) && $default_timeout < 604800 ) {
 				return $default_timeout;
 			} else {
-				 return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'wp-rest-api-cache' ) );
 			}
 
 		}

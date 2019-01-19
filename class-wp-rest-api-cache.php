@@ -177,20 +177,15 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				}
 
 				// Get WordPress Time Zone Settings.
-				$gmt_offset      = get_option( 'gmt_offset' ) ?? 0;
-				$timezone_string = get_option( 'timezone_string' ) ?? '';
+				$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
 
 				// Get Transient Timeout.
 				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
 
 				if ( null !== $cache_timeout ) {
 
-					if ( ! empty( $timezone_string ) || '' !== $timezone_string || null !== $timezone_string ) {
-						date_default_timezone_set( $timezone_string );
-					}
-
 					// Set Transient Timeout & Diff.
-					$transient_timeout = date( 'F j, Y, g:i A', $cache_timeout ) ?? null;
+					$transient_timeout = date( 'F j, Y, g:i A', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
 					$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
 
 					// Send Cache Timeout Header.
