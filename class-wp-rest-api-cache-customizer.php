@@ -10,6 +10,7 @@ defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 
+	// Require Customizer Control.
 	require_once ABSPATH . WPINC . '/class-wp-customize-control.php';
 
 	/**
@@ -21,7 +22,6 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		 * Constructing a customizing running lemming.
 		 *
 		 * @access public
-		 * @return void
 		 */
 		public function __construct() {
 				add_action( 'customize_register', array( $this, 'register' ) );
@@ -31,9 +31,8 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		 *
 		 * @access public
 		 * @param mixed $wp_customize Support Customizer.
-		 * @return void
 		 */
-		function register( $wp_customize ) {
+		public function register( $wp_customize ) {
 
 			// Rest API Cache Panel.
 			$wp_customize->add_panel(

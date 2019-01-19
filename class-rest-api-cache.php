@@ -9,6 +9,8 @@
  * License: GPL3+
  */
 
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
 
 if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
@@ -24,14 +26,14 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		 */
 		public function __construct() {
 
-			// Include Our Customizer.
-			include_once 'class-rest-api-customizer.php';
+			// Include Our Customizer Settings.
+			include_once 'class-wp-rest-api-cache-customizer.php';
 
 			$cache_options = get_option( 'rest_api_cache' ) ?? array();
 
 			$disable_cache = $cache_options['disable'] ?? false;
 
-			if ( ! is_admin() && false == $disable_cache ) {
+			if ( ! is_admin() && false === $disable_cache ) {
 
 				add_filter( 'rest_pre_dispatch', array( $this, 'cache_requests_headers' ), 10, 3 );
 
@@ -130,7 +132,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		 * @param mixed $server Server.
 		 * @param mixed $request Request.
 		 */
-		public function cache_requests_headers( $response, WP_REST_Server $server, WP_REST_Request $request ) {
+		public function cache_requests_headers( $response, $server, $request ) {
 
 			// Get Request URI.
 			$request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
@@ -211,11 +213,17 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		 */
 		public function delete_cache( $cache_key ) {
 
-			// Delete Transient.
-			delete_transient( $cache_key );
+			if ( ! empty( $cache_key ) ) {
 
-			 // Sometimes Transient are not in DB. So Flush.
-			 wp_cache_flush();
+				// Delete Transient.
+				delete_transient( $cache_key );
+
+				 // Sometimes Transient are not in DB. So Flush.
+				 wp_cache_flush();
+
+			} else {
+				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'wp-rest-api-cache' ) );
+			}
 		}
 
 		public function delete_all_cache() {
@@ -236,7 +244,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 				$timeout_key = '_transient_timeout_' . $cache_key;
 
-				$cache_timeout = $wpdb->get_col( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name LIKE '%s'", $timeout_key ) );
+				$cache_timeout = $wpdb->get_col( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name LIKE %s", $timeout_key ) );
 
 				if ( ! empty( $cache_timeout ) ) {
 					return $cache_timeout[0];
