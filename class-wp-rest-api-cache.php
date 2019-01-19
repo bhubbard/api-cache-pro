@@ -71,7 +71,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 			if ( ! empty( $request_uri ) ) {
 				$cache_key = apply_filters( 'rest_api_cache_key', 'rest_api_cache_' . md5( $request_uri ) );
 			} else {
-				 return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'wp-rest-api-cache' ) );
 			}
 
 			return $cache_key;
@@ -87,10 +87,10 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		 */
 		public function cache_requests( $response, $handler, $request ) {
 
-			 // Get Request URI.
-			 $request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
+			// Get Request URI.
+			$request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
 
-			 // Timeouts.
+			// Timeouts.
 			$timeout = apply_filters( 'rest_api_cache_timeout', $this->get_timeout() );
 
 			if ( null !== $request_uri ) {
@@ -173,7 +173,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				$display_key_header = true;
 				$display_cache_key  = apply_filters( 'rest_cache_display_key_header', $display_key_header );
 				if ( true === $display_cache_key ) {
-					 $server->send_header( 'X-WP-API-CACHE-KEY', $cache_key );
+					$server->send_header( 'X-WP-API-CACHE-KEY', $cache_key );
 				}
 
 				// Get WordPress Time Zone Settings.
@@ -193,9 +193,12 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 					$transient_timeout = date( 'F j, Y, g:i A', $cache_timeout ) ?? null;
 					$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
 
+					// Send Cache Timeout Header.
 					if ( null !== $transient_timeout ) {
 						$server->send_header( 'X-WP-API-CACHE-TIMEOUT', $transient_timeout );
 					}
+
+					// Send Cache Timeout Diff Header.
 					if ( null !== $timeout_diff ) {
 						$server->send_header( 'X-WP-API-CACHE-TIMEOUT-DIFF', $timeout_diff );
 					}
@@ -220,8 +223,8 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				// Delete Transient.
 				delete_transient( $cache_key );
 
-				 // Sometimes Transient are not in DB. So Flush.
-				 wp_cache_flush();
+				// Sometimes Transient are not in DB. So Flush.
+				wp_cache_flush();
 
 			} else {
 				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'wp-rest-api-cache' ) );
@@ -263,30 +266,6 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 			}
 
 		}
-
-
-		/**
-		 * Debug.
-		 *
-		 * @access public
-		 * @param mixed $log Log.
-		 */
-		public function debug_log( $log ) {
-			if ( defined( 'WP_DEBUG' )
-			&& true === WP_DEBUG
-			&& defined( 'WP_DEBUG_LOG' )
-			&& true === WP_DEBUG_LOG ) {
-				if ( is_array( $log ) || is_object( $log ) ) {
-					error_log( print_r( $log, true ) );
-				} elseif ( is_bool( $log ) ) {
-					error_log( print_r( $log ? "$log (true)" : "$log (false)", true ) );
-				} else {
-					error_log( $log );
-				}
-			}
-		}
-
-
 
 	} // End Class.
 
