@@ -222,7 +222,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 				delete_transient( $cache_key );
 
 				// Sometimes Transient are not in DB. So Flush.
-				wp_cache_flush();
+				$flush_cache = wp_cache_flush();
 
 			} else {
 				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'wp-rest-api-cache' ) );
