@@ -267,7 +267,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 				$timeout_key = '_transient_timeout_' . $cache_key;
 
-				$cache_timeout = $wpdb->get_col( $wpdb->prepare( "SELECT option_value FROM {$wpdb->options} WHERE option_name LIKE %s", $timeout_key ) );
+				$cache_timeout = $wpdb->get_col( $wpdb->prepare( "SELECT option_value FROM $wpdb->options WHERE option_name LIKE %s", $timeout_key ) );
 
 				if ( ! empty( $cache_timeout ) ) {
 					return $cache_timeout[0];
