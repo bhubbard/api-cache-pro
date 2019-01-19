@@ -27,4 +27,4 @@ This plugin enables caching for the WordPress REST API to improve performance. O
 
 ## Changelog ##
 
-Please see CHANGELOG.MD
+Please see [CHANGELOG.MD](CHANGELOG.md)
