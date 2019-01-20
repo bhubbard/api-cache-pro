@@ -1,4 +1,4 @@
-# WP REST API CACHE #
+# API Cache Pro #
 A simple plugin to cache WP Rest API Requests.
 
 **Contributors:** [bhubbard](https://profiles.wordpress.org/bhubbard)  
