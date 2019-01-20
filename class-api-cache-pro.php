@@ -179,15 +179,16 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 				}
 
-				// Get WordPress Time Zone Settings.
-				$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
-
 				// Get Transient Timeout.
 				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
 
+				// Display Cache Timout.
 				$display_cache_timeout = apply_filters( 'api_cache_pro_timeout_header', true );
 
 				if ( null !== $cache_timeout && true === $display_cache_timeout ) {
+
+					// Get WordPress Time Zone Settings.
+					$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
 
 					// Set Transient Timeout & Diff.
 					$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
