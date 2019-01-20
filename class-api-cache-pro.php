@@ -41,6 +41,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 				add_filter( 'rest_request_after_callbacks', array( $this, 'cache_requests' ), 10, 3 );
 
+				// Delete Cache when we save a post.
+				add_action( 'save_post', array( $this, 'delete_all_cache' ) );
+
 			}
 
 			// Delete All Cache on Deactivation.

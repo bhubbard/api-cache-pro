@@ -62,7 +62,8 @@ add_action( 'api_cache_pro_key_header', 'disable_api_cache_pro_key_header' );
 The cache will automatically get cleared if you do any of the following:
 
 * Disable the Cache
-* Change the Default Cache Timeout Length
+* Update the Default Cache Timeout Length
+* Update any post, page or custom post type.
 * Deactivate or Uninstall the plugin
 
 ## Installation ##
