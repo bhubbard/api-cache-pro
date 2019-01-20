@@ -28,8 +28,10 @@ X-API-CACHE-PRO-EXPIRES-DIFF: 5 mins
 X-API-CACHE-PRO-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
 ```
 
-**X-API-CACHE-PRO** - Displays Cached, or Not Cached
-
+* **X-API-CACHE-PRO** - Displays Cached, or Not Cached.
+* **X-API-CACHE-PRO-EXPIRES** - Displays the date/time the cache is set to expire.
+* **X-API-CACHE-PRO-EXPIRES-DIFF** - Displays the difference from current time to the time cache is set to expire. 
+* **X-API-CACHE-PRO-KEY** - Displays the key used for the cache.
 
 ## Installation ##
 
