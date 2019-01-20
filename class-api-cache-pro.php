@@ -94,7 +94,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
 
 			// Timeouts.
-			$timeout = apply_filters( 'rest_api_cache_timeout', $this->get_timeout() );
+			$timeout = $this->get_timeout();
 
 			if ( null !== $request_uri ) {
 				$cache_key = $this->cache_key( $request_uri ) ?? null;
