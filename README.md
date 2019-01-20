@@ -40,7 +40,7 @@ This plugin offers several filters so you can disable these headers:
 Filters
 ====
 | Filter    | Type | Default
-|-----------|-----------|
+|-----------|-----------|-------------|
 | api_cache_pro_header | boolean | true
 | api_cache_pro_key_header | boolean | true
 | api_cache_pro_expires_header | boolean | true
