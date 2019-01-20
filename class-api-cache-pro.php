@@ -81,7 +81,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			if ( ! empty( $request_uri ) ) {
 				$cache_key = apply_filters( 'api_cache_pro_key', 'api_cache_pro_' . md5( $request_uri ) );
 			} else {
-				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'api-cache-pro' ) );
 			}
 
 			return $cache_key;
@@ -199,7 +199,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 				// Send Header - Cached.
 				if ( true === $display_cache_header ) {
-					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'wp-rest-api-cache' ) );
+					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'api-cache-pro' ) );
 				}
 
 				// Display Key Header.
@@ -238,7 +238,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			} else {
 				// Send Header - Not Cached.
 				if ( true === $display_cache_header ) {
-					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'wp-rest-api-cache' ) );
+					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
 				}
 			}
 
@@ -261,7 +261,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				$flush_cache = wp_cache_flush();
 
 			} else {
-				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'api-cache-pro' ) );
 			}
 		}
 
@@ -313,7 +313,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					return null;
 				}
 			} else {
-				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'api-cache-pro' ) );
 			}
 
 		}
