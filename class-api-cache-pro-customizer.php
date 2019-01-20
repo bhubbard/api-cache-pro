@@ -2,7 +2,7 @@
 /**
  * Create section for settings in customizer.
  *
- * @package wp-rest-api-cache
+ * @package api-cache-pro
  */
 
 // Exit if accessed directly.
