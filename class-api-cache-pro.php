@@ -258,6 +258,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 					$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
 				}
+
 			}
 
 		}
