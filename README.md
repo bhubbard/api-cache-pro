@@ -69,6 +69,10 @@ The cache will automatically get cleared if you do any of the following:
 * Update any post, page or custom post type.
 * Deactivate or Uninstall the plugin
 
+You can skip that cache by adding the following param to any request:
+
+```cache=disabled```
+
 ## WP-CLI Support
 
 *API Cache Pro* offers wp-cli support to clear cache with the following command:
