@@ -20,7 +20,7 @@ This plugin enables caching for the WordPress REST API to improve performance. O
 
 ## Request Headers
 
-Several Headers are added to all the API Requests. Here is an example of the available headers.
+Several Headers are added to all the API Requests. This plugin will also modify the Cache-Control header as well. Here is an example of the available custom headers.
 
 ```
 X-API-CACHE-PRO: Cached
@@ -33,6 +33,7 @@ X-API-CACHE-PRO-KEY: api_cache_pro_78be25416f69cd3a885dcf14017a0691
 * **X-API-CACHE-PRO-EXPIRES** - Displays the date/time the cache is set to expire.
 * **X-API-CACHE-PRO-EXPIRES-DIFF** - Displays the difference from current time to the time cache is set to expire. 
 * **X-API-CACHE-PRO-KEY** - Displays the key used for the cache.
+
 
 This plugin offers several filters so you can disable these headers:
 
