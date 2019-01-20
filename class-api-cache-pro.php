@@ -103,16 +103,20 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Timeouts.
 			$timeout = $this->get_timeout();
 
+			// Set Cache Key if we have a Request URI.
 			if ( null !== $request_uri || '' !== $request_uri || ! empty( $request_uri ) ) {
 				$cache_key = $this->cache_key( $request_uri ) ?? null;
 			} else {
 				return $response;
 			}
 
+			// Check if Response is Error.
 			if ( ! is_wp_error( $response ) ) {
 
+				// Check for Cache Key.
 				if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
 
+					// Get Cache from Transient.
 					$cache_results = get_transient( $cache_key );
 
 					// Check Transient.
