@@ -269,16 +269,15 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function display_cache_header( $cache_key, $server, $request ) {
 
+			$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
+
 			// Set to Display Cache Control Header.
 			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
 
-			if ( 'disabled' !== $request->get_param( 'cache' ) && ! is_wp_error( $request ) ) {
+			if ( null !== $cache_timeout && true === $display_cache_header && 'disabled' !== $request->get_param( 'cache' ) ) {
 
-				if ( true === $display_cache_header ) {
 					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'api-cache-pro' ) );
-				} else {
-					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
-				}
+
 			} else {
 				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
 			}
@@ -295,12 +294,12 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function display_key_headers( $cache_key, $server, $request ) {
 
+			$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
+
 			$display_cache_key = apply_filters( 'api_cache_pro_key_header', true );
 
-			if ( 'disabled' !== $request->get_param( 'cache' ) && ! is_wp_error( $request ) ) {
-				if ( true === $display_cache_key ) {
-					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
-				}
+			if ( null !== $cache_timeout && true === $display_cache_key && 'disabled' !== $request->get_param( 'cache' ) ) {
+				$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 			}
 		}
 
@@ -363,6 +362,8 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 				if ( ! empty( $results ) ) {
 					return $results->option_value ?? '';
+				} else {
+					return false;
 				}
 			} else {
 				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'api-cache-pro' ) );
