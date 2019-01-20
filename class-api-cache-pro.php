@@ -370,7 +370,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				);
 
 				if ( ! empty( $results ) ) {
-					return $results->option_value;
+					return $results->option_value ?? '';
 				}
 			} else {
 				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'api-cache-pro' ) );
