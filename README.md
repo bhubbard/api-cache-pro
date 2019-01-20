@@ -33,6 +33,21 @@ X-API-CACHE-PRO-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
 * **X-API-CACHE-PRO-EXPIRES-DIFF** - Displays the difference from current time to the time cache is set to expire. 
 * **X-API-CACHE-PRO-KEY** - Displays the key used for the cache.
 
+You can use several filters to disable these headers:
+
+```php
+/**
+ * Disable API Cache Pro Key Header.
+ * 
+ * @access public
+ */
+function disable_api_cache_pro_key_header() {
+	return false;
+}
+add_action( 'api_cache_pro_key_header', 'disable_api_cache_pro_key_header' );
+
+```
+
 ## Installation ##
 
 1. Copy the `api-cache-pro` folder into your `wp-content/plugins` folder
