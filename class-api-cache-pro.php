@@ -252,10 +252,10 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$results = $wpdb->query(
 				$wpdb->prepare(
 					"DELETE FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
-					'_transient_rest_api_cache_%',
-					'_transient_timeout_rest_api_cache_%',
-					'_site_transient_rest_api_cache_%',
-					'_site_transient_timeout_rest_api_cache_%'
+					'_transient_api_cache_pro_%',
+					'_transient_timeout_api_cache_pro_%',
+					'_site_transient_api_cache_pro_%',
+					'_site_transient_timeout_api_cache_pro_%'
 				)
 			);
 
