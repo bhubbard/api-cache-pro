@@ -30,7 +30,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 			$enable_customizer = apply_filters( 'api_cache_pro_customizer', true );
 
-			if ( true === $enable_customizer || null !== $enable_customizer ) {
+			if ( false !== $enable_customizer ) {
 				// Include Our Customizer Settings.
 				include_once 'class-api-cache-pro-customizer.php';
 			}
@@ -130,7 +130,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					$cache_results = get_transient( $cache_key );
 
 					// Check Transient.
-					if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) ) {
+					if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) || null === $cache_results ) {
 
 						if ( null !== $response || '' !== $response || ! empty( $response ) ) {
 							$result = $response->get_data() ?? '';
@@ -144,7 +144,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 							$set_cache = set_transient( $cache_key, $result, $timeout );
 						}
 
-						// Return Response.
+						// Return Response - Cache Not Ready.
 						return $response;
 
 					} else {
@@ -154,11 +154,11 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 					}
 				} else {
-					// Return Response.
+					// Return Response - No Cache Results.
 					return $response;
 				}
 			} else {
-				// Is Error, Return Response.
+				// Return Response - Is WP Error.
 				return $response;
 			}
 
@@ -205,7 +205,8 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Set Display Cache Header Filter.
 			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
 
-			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results ) {
+			// Check Cache Results.
+			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
 
 				// Send Header - Cached.
 				if ( true === $display_cache_header ) {
