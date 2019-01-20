@@ -5,6 +5,8 @@
  * Author: Brandon Hubbard
  * Author URI: http://github.com/bhubbard
  * Version: 0.0.1
+ * Text Domain: api-cache-pro
+ * Domain Path: /languages/
  * Plugin URI: https://github.com/bhubbard/blah
  * License: GPL3+
  *
