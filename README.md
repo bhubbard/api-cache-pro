@@ -16,10 +16,10 @@ This plugin enables caching for the WordPress REST API to improve performance. O
 
 ### Customizer Options
 
-* Disable Cache
-* Default Cache Timeout
+- Disable Cache
+- Default Cache Timeout
 
-### Request Headers
+## Request Headers
 
 Several Headers are added to all the API Requests. Here is an example of the available headers.
 
@@ -37,8 +37,7 @@ X-API-CACHE-PRO-KEY: api_cache_pro_78be25416f69cd3a885dcf14017a0691
 
 This plugin offers several filters so you can disable these headers:
 
-#### Filters
-
+Filters
 ====
 | Filter    | Type | Default
 |-----------|-----------|-------------|
