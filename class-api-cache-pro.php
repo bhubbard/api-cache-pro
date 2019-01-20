@@ -193,7 +193,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 			// Send Cache Control Header.
 			if ( null !== $max_age && null !== $s_max_age && true === $display_cache_control_header ) {
-				$server->send_header( 'Cache-Control', 'public s-maxage=' . $s_max_age . ' max-age=' . $max_age . ' re-validate' );
+				$server->send_header( 'Cache-Control', 'public s-maxage=' . $s_max_age . ' max-age=' . $max_age );
 			}
 
 			// Get Cache Key.
