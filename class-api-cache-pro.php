@@ -179,11 +179,14 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$timeout = $this->get_timeout() ?? 300;
 
 			// Set Cache Control Header.
-			$max_age   = apply_filters( 'rest_cache_max_age', $timeout ) ?? null;
-			$s_max_age = apply_filters( 'rest_cache_s_max_age', $timeout ) ?? null;
+			$max_age   = apply_filters( 'api_cache_pro_max_age', $timeout ) ?? null;
+			$s_max_age = apply_filters( 'api_cache_pro_s_max_age', $timeout ) ?? null;
+
+			// Set to Display Cache Control Header.
+			$display_cache_control_header = apply_filters( 'api_cache_pro_control_header', true );
 
 			// Send Cache Control Header.
-			if ( null !== $max_age && null !== $s_max_age ) {
+			if ( null !== $max_age && null !== $s_max_age && true === $display_cache_control_header ) {
 				$server->send_header( 'Cache-Control', 'public s-maxage=' . $s_max_age . ' max-age=' . $max_age . ' re-validate' );
 			}
 
