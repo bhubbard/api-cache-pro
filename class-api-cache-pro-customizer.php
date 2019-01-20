@@ -102,7 +102,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 					'section'     => 'api_cache_pro_settings_section',
 					'settings'    => 'api_cache_pro[default_timeout]',
 					'input_attrs' => array(
-						'min'  => 300, // Set Min to 300
+						'min'  => 300, // Set Min to 300.
 						'max'  => 604800, // Max of 7 Days in Seconds.
 						'step' => 1,
 					),
@@ -136,7 +136,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 		 */
 		public function sanitize_default_timeout( $default_timeout ) {
 
-			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 && $default_timeout >= 300  ) {
+			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 && $default_timeout >= 300 ) {
 
 				// Flush Cache to respect new timeouts.
 				$cache = new API_CACHE_PRO();
