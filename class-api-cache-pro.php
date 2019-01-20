@@ -246,18 +246,14 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Check for Cache from Transient.
 			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 
-			// Check Cache Results.
-			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
-
-				// Display Cache Header.
-				if ( 'disabled' !== $request->get_param( 'cache' ) || ! is_wp_error( $response ) ) {
+			// Checks before we send our header.
+			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) || 'disabled' !== $request->get_param( 'cache' ) || ! is_wp_error( $response ) ) {
 
 					$cache_headers = $this->display_cache_header( $cache_key, $server, $request );
 
 					$key_headers = $this->display_key_headers( $cache_key, $server, $request );
 
 					$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
-				}
 
 			}
 
