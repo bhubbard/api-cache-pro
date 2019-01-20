@@ -15,8 +15,8 @@ This plugin enables caching for the WordPress REST API to improve performance. O
 
 ### Customizer Options
 
-- Disable Cache
-- Set Default Cache Timeout
+- Disable Cache (Default: Disabled)
+- Set Default Cache Timeout (Default: 300)
 
 ## Request Headers
 
