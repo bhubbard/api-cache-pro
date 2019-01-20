@@ -35,7 +35,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				include_once 'class-api-cache-pro-customizer.php';
 			}
 
-			$cache_options = get_option( 'api_cache_pro' ) ?? array();
+			$cache_options = $this->get_option();
 
 			$disable_cache = $cache_options['disable'] ?? false;
 
@@ -56,13 +56,23 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		}
 
 		/**
+		 * Get Option
+		 *
+		 * @access public
+		 */
+		public function get_option() {
+			$option = get_option( 'api_cache_pro' ) ?? array();
+			return $option;
+		}
+
+		/**
 		 * Get Timeout.
 		 *
 		 * @access public
 		 */
 		public function get_timeout() {
 
-			$cache_options = get_option( 'api_cache_pro' ) ?? array();
+			$cache_options = $this->get_option();
 
 			$default_timout = $cache_options['default_timeout'] ?? 300;
 
