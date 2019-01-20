@@ -22,17 +22,17 @@ This plugin enables caching for the WordPress REST API to improve performance. O
 Several Headers are added to all the API Requests. Here is an example of the available headers.
 
 ```
-X-WP-API-CACHE: Cached
-X-WP-API-CACHE-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
-X-WP-API-CACHE-TIMEOUT: January 20, 2019, 12:02 AM UTC
-X-WP-API-CACHE-TIMEOUT-DIFF: 5 mins
+X-API-CACHE-PRO: Cached
+X-API-CACHE-PRO-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
+X-API-CACHE-PRO-TIMEOUT: January 20, 2019, 12:32 AM UTC
+X-API-CACHE-PRO-TIMEOUT-DIFF: 4 mins
 ```
 
 
 ## Installation ##
 
-1. Copy the `wp-rest-api-cache` folder into your `wp-content/plugins` folder
-2. Activate the `WP REST API Cache` plugin via the plugin admin page
+1. Copy the `api-cache-pro` folder into your `wp-content/plugins` folder
+2. Activate the `API Cache Pro` plugin via the plugin admin page
 
 ## Changelog ##
 

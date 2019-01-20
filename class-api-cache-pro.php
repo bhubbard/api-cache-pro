@@ -170,13 +170,13 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results ) {
 
 				// Send Header - Cached.
-				$server->send_header( 'X-WP-API-CACHE', esc_html( 'Cached', 'wp-rest-api-cache' ) );
+				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'wp-rest-api-cache' ) );
 
 				// Display Key Header.
-				$display_key_header = true;
-				$display_cache_key  = apply_filters( 'rest_cache_display_key_header', $display_key_header );
+				$display_cache_key  = apply_filters( 'api_cache_pro_key_header', true );
+
 				if ( true === $display_cache_key ) {
-					$server->send_header( 'X-WP-API-CACHE-KEY', $cache_key );
+					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 				}
 
 				// Get WordPress Time Zone Settings.
@@ -185,7 +185,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				// Get Transient Timeout.
 				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
 
-				if ( null !== $cache_timeout ) {
+				$display_cache_timeout = apply_filters( 'api_cache_pro_timeout_header', true );
+
+				if ( null !== $cache_timeout && true === $display_cache_timeout ) {
 
 					// Set Transient Timeout & Diff.
 					$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
@@ -193,17 +195,17 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 					// Send Cache Timeout Header.
 					if ( null !== $transient_timeout ) {
-						$server->send_header( 'X-WP-API-CACHE-TIMEOUT', $transient_timeout );
+						$server->send_header( 'X-API-CACHE-PRO-TIMEOUT', $transient_timeout );
 					}
 
 					// Send Cache Timeout Diff Header.
 					if ( null !== $timeout_diff ) {
-						$server->send_header( 'X-WP-API-CACHE-TIMEOUT-DIFF', $timeout_diff );
+						$server->send_header( 'X-API-CACHE-PRO-TIMEOUT-DIFF', $timeout_diff );
 					}
 				}
 			} else {
 				// Send Header - Not Cached.
-				$server->send_header( 'X-WP-API-CACHE', esc_html( 'Not Cached', 'wp-rest-api-cache' ) );
+				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'wp-rest-api-cache' ) );
 			}
 
 		}
