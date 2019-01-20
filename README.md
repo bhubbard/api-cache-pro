@@ -37,12 +37,14 @@ X-API-CACHE-PRO-KEY: api_cache_pro_78be25416f69cd3a885dcf14017a0691
 
 This plugin offers several filters so you can disable these headers:
 
-```
-api_cache_pro_header
-api_cache_pro_key_header
-api_cache_pro_expires_header
-api_cache_pro_expires_diff_header
-```
+Filters
+====
+| Filter    | Type | Default
+|-----------|-----------|
+| api_cache_pro_header | boolean | true
+| api_cache_pro_key_header | boolean | true
+| api_cache_pro_expires_header | boolean | true
+| api_cache_pro_expires_diff_header | boolean | true
 
 You can use these filters to disable any of the headers. Here is an example to disable the Key Header.
 
@@ -58,6 +60,7 @@ function disable_api_cache_pro_key_header() {
 add_action( 'api_cache_pro_key_header', 'disable_api_cache_pro_key_header' );
 
 ```
+
 
 ## Installation ##
 
