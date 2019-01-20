@@ -72,7 +72,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		public function cache_key( $request_uri ) {
 
 			if ( ! empty( $request_uri ) ) {
-				$cache_key = apply_filters( 'rest_api_cache_key', 'rest_api_cache_' . md5( $request_uri ) );
+				$cache_key = apply_filters( 'api_cache_pro_key', 'api_cache_pro_' . md5( $request_uri ) );
 			} else {
 				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'wp-rest-api-cache' ) );
 			}

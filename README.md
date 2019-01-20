@@ -25,7 +25,7 @@ Several Headers are added to all the API Requests. Here is an example of the ava
 X-API-CACHE-PRO: Cached
 X-API-CACHE-PRO-EXPIRES: January 20, 2019, 12:39 AM UTC
 X-API-CACHE-PRO-EXPIRES-DIFF: 5 mins
-X-API-CACHE-PRO-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
+X-API-CACHE-PRO-KEY: api_cache_pro_78be25416f69cd3a885dcf14017a0691
 ```
 
 * **X-API-CACHE-PRO** - Displays Cached, or Not Cached.
