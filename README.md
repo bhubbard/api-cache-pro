@@ -58,7 +58,13 @@ function disable_api_cache_pro_key_header() {
 add_action( 'api_cache_pro_key_header', 'disable_api_cache_pro_key_header' );
 
 ```
+## Clearing Cache
 
+The cache will automatically get cleared if you do any of the following:
+
+* Disable the Cache
+* Change the Default Cache Timeout Length
+* Deactivate or Uninstall the plugin
 
 ## Installation ##
 
