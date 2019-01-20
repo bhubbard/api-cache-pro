@@ -231,7 +231,6 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$max_age   = apply_filters( 'api_cache_pro_max_age', $timeout ) ?? null;
 			$s_max_age = apply_filters( 'api_cache_pro_s_max_age', $timeout ) ?? null;
 
-			// Set to Display Cache Control Header.
 			$display_cache_control_header = apply_filters( 'api_cache_pro_control_header', true );
 
 			// Send Cache Control Header.
@@ -250,24 +249,44 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Check Cache Results.
 			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
 
-				// Send Header - Cached.
-				if ( true === $display_cache_header && 'disabled' !== $request->get_param( 'cache' ) ) {
+				// Display Cache Header.
+				if ( 'disabled' !== $request->get_param( 'cache' ) || ! is_wp_error( $response ) ) {
+
+					$cache_headers = $this->display_cache_header( $cache_key, $server, $request );
+
+					$key_headers = $this->display_key_headers( $cache_key, $server, $request );
+
+					$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
+				}
+			}
+
+		}
+
+		/**
+		 * Display Main Cache Header.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 * @param mixed $server Server.
+		 * @param mixed $request Request.
+		 */
+		public function display_cache_header( $cache_key, $server, $request ) {
+
+			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
+
+			// Set to Display Cache Control Header.
+			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
+
+			if ( 'disabled' !== $request->get_param( 'cache' ) && ! is_wp_error( $request ) ) {
+
+				if ( true === $display_cache_header && true == $cache_results ) {
 					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'api-cache-pro' ) );
 				} else {
 					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
+
 				}
-
-				// Display Key Header.
-				$key_headers = $this->display_key_headers( $cache_key, $server, $request );
-
-				// Send Expire Headers.
-				$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
-
 			} else {
-				// Send Header - Not Cached.
-				if ( true === $display_cache_header ) {
-					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
-				}
+				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
 			}
 
 		}
@@ -286,8 +305,8 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 
-			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
-				if ( true === $display_cache_key && 'disabled' !== $request->get_param( 'cache' ) ) {
+			if ( 'disabled' !== $request->get_param( 'cache' ) && ! is_wp_error( $request ) ) {
+				if ( true == $cache_results && true === $display_cache_key ) {
 					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 				}
 			}
@@ -330,6 +349,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				}
 			}
 		}
+
 
 		/**
 		 * Delete Cache.
