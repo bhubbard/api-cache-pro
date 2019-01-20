@@ -134,17 +134,21 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 							$set_cache = set_transient( $cache_key, $result, $timeout );
 						}
 
+						// Return Response.
 						return $response;
 
 					} else {
 
+						// Return Cache Results.
 						return $cache_results;
 
 					}
 				} else {
+					// Return Response.
 					return $response;
 				}
 			} else {
+				// Is Error, Return Response.
 				return $response;
 			}
 
