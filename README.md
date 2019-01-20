@@ -38,6 +38,7 @@ X-API-CACHE-PRO-KEY: api_cache_pro_78be25416f69cd3a885dcf14017a0691
 This plugin offers several filters so you can disable these headers:
 
 #### Filters
+
 ====
 | Filter    | Type | Default
 |-----------|-----------|-------------|
