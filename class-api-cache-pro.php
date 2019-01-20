@@ -87,9 +87,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 * @access public
 		 * @param mixed $request_uri Request URI.
 		 */
-		public function cache_key( $request_uri ) {
+		public function get_cache_key( $request_uri ) {
 
-			if ( ! empty( $request_uri ) ) {
+			if ( ! empty( $request_uri ) || null !== $request_uri || '' !== $request_uri ) {
 				$cache_key = apply_filters( 'api_cache_pro_key', 'api_cache_pro_' . md5( $request_uri ) );
 			} else {
 				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'api-cache-pro' ) );
@@ -114,6 +114,11 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Set Cache Param.
 			$request->set_param( 'cache', true );
 
+			// Check if Response is Error.
+			if ( is_wp_error( $response ) || 'disabled' === $request->get_param( 'cache' ) ) {
+				return $response;
+			}
+
 			// Timeouts.
 			$timeout = $this->get_timeout();
 
@@ -121,51 +126,44 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$method   = $request->get_method();
 
 			// Set Cache Key if we have a Request URI.
-			if ( null !== $request_uri || '' !== $request_uri || ! empty( $request_uri ) ) {
-				$cache_key = $this->cache_key( $request_uri ) ?? null;
-			} else {
+			$cache_key = $this->get_cache_key( $request_uri ) ?? null;
+
+			if ( empty( $cache_key ) || null === $cache_key || '' === $cache_key ) {
 				return $response;
 			}
 
-			// Check if Response is Error.
-			if ( ! is_wp_error( $response ) || 'disabled' !== $request->get_param( 'cache' ) ) {
-
 				// Check for Cache Key.
-				if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
+			if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
 
-					// Get Cache from Transient.
-					$cache_results = get_transient( $cache_key );
+				// Get Cache from Transient.
+				$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 
-					// Check Transient.
-					if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) || null === $cache_results ) {
+				// Check Transient.
+				if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) || null === $cache_results ) {
 
-						if ( null !== $response || '' !== $response || ! empty( $response ) ) {
-							$result = $response->get_data() ?? '';
-
-						} else {
-							$result = null;
-						}
-
-						// Set Transient.
-						if ( ! empty( $result ) || null !== $result || '' !== $result ) {
-							$set_cache = set_transient( $cache_key, $result, $timeout );
-						}
-
-						// Return Response - Cache Not Ready.
-						return $response;
+					if ( null !== $response || '' !== $response || ! empty( $response ) ) {
+						$result = $response->get_data() ?? '';
 
 					} else {
-
-						// Return Cache Results.
-						return $cache_results;
-
+						$result = null;
 					}
-				} else {
-					// Return Response - No Cache Results.
+
+					// Set Transient.
+					if ( ! empty( $result ) || null !== $result || '' !== $result ) {
+						$set_cache = set_transient( $cache_key, $result, $timeout );
+					}
+
+					// Return Response - Cache Not Ready.
 					return $response;
+
+				} else {
+
+					// Return Cache Results.
+					return $cache_results;
+
 				}
 			} else {
-				// Return Response - Is WP Error.
+				// Return Response - No Cache Results.
 				return $response;
 			}
 
@@ -209,6 +207,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$path   = $request->get_route() ?? null;
 			$method = $request->get_method() ?? 'GET';
 
+			// Get Timeout.
 			$timeout = $this->get_timeout() ?? 300;
 
 			// Set Cache Control Header.
@@ -224,7 +223,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			}
 
 			// Get Cache Key.
-			$cache_key = $this->cache_key( $request_uri ) ?? '';
+			$cache_key = $this->get_cache_key( $request_uri ) ?? '';
 
 			// Check for Cache from Transient.
 			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
@@ -268,11 +267,11 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function display_expires_headers( $cache_key, $server, $request ) {
 
-				// Get Transient Timeout.
-				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
+			// Get Transient Timeout.
+			$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
 
-				// Display Cache Timout.
-				$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
+			// Display Cache Timout.
+			$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
 
 			if ( null !== $cache_timeout && true === $display_cache_timeout && 'disabled' !== $request->get_param( 'cache' ) ) {
 
