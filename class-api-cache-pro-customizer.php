@@ -8,15 +8,15 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
+if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 
 	// Require Customizer Control.
 	require_once ABSPATH . WPINC . '/class-wp-customize-control.php';
 
 	/**
-	 * WP_REST_API_Cache_Customizer
+	 * API_Cache_Pro_Customizer
 	 */
-	class WP_REST_API_Cache_Customizer {
+	class API_Cache_Pro_Customizer {
 
 		/**
 		 * Constructing a customizing running lemming.
@@ -120,7 +120,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		public function sanitize_disable_cache( $disable_cache ) {
 
 			if ( true === $disable_cache ) {
-				$cache = new WP_REST_API_CACHE();
+				$cache = new API_CACHE_PRO();
 				$cache->delete_all_cache();
 			}
 
@@ -139,7 +139,7 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 ) {
 
 				// Flush Cache to respect new timeouts.
-				$cache = new WP_REST_API_CACHE();
+				$cache = new API_CACHE_PRO();
 				$cache->delete_all_cache();
 
 				return $default_timeout;
@@ -151,6 +151,6 @@ if ( ! class_exists( 'WP_REST_API_Cache_Customizer' ) ) {
 		}
 	}
 
-	new WP_REST_API_Cache_Customizer();
+	new API_Cache_Pro_Customizer();
 
 }

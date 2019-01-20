@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: WP Rest API Cache
+ * Plugin Name: API Cache Pro
  * Description: A simple plugin to cache WP Rest API Requests.
  * Author: Brandon Hubbard
  * Author URI: http://github.com/bhubbard
@@ -14,12 +14,12 @@
 // Exit if accessed directly.
 defined( 'ABSPATH' ) || exit;
 
-if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
+if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 	/**
-	 * WP_REST_API_CACHE class.
+	 * API_CACHE_PRO class.
 	 */
-	class WP_REST_API_CACHE {
+	class API_CACHE_PRO {
 
 		/**
 		 * Constructor.
@@ -29,7 +29,7 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 		public function __construct() {
 
 			// Include Our Customizer Settings.
-			include_once 'class-wp-rest-api-cache-customizer.php';
+			include_once 'class-api-cache-pro-customizer.php';
 
 			$cache_options = get_option( 'rest_api_cache' ) ?? array();
 
@@ -284,6 +284,6 @@ if ( ! class_exists( 'WP_REST_API_CACHE' ) ) {
 
 	} // End Class.
 
-	new WP_REST_API_CACHE();
+	new API_CACHE_PRO();
 
 }
