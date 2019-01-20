@@ -350,6 +350,32 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			}
 		}
 
+		/**
+		 * Get Single Cache Item.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 */
+		public function get_single_cache_item( $cache_key ) {
+
+			if ( ! empty( $cache_key ) || '' !== $cache_key || null !== $cache_key || false !== $cache_key ) {
+
+				global $wpdb;
+
+				$results = $wpdb->get_row(
+					$wpdb->prepare(
+						"SELECT option_value FROM $wpdb->options WHERE option_name = %s",
+						'_transient_' . $cache_key
+					)
+				);
+
+				if ( ! empty( $results ) ) {
+					return $results->option_value;
+				}
+			} else {
+				return new WP_Error( 'missing_cache_key', __( 'Please provide the Cache Key (Transient Name).', 'api-cache-pro' ) );
+			}
+		}
 
 		/**
 		 * Delete Cache.
