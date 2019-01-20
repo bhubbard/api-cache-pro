@@ -30,6 +30,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 			include_once 'class-api-cache-pro-customizer.php';
 
+			// Include CLI Support.
+			include_once 'includes/class-api-cache-pro-cli.php';
+
 			$cache_options = $this->get_option();
 
 			$disable_cache = $cache_options['disable'] ?? false;
