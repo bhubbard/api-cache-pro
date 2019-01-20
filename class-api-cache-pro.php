@@ -28,12 +28,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function __construct() {
 
-			$enable_customizer = apply_filters( 'api_cache_pro_customizer', true );
-
-			if ( false !== $enable_customizer ) {
-				// Include Our Customizer Settings.
-				include_once 'class-api-cache-pro-customizer.php';
-			}
+			include_once 'class-api-cache-pro-customizer.php';
 
 			$cache_options = $this->get_option();
 

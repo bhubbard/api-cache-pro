@@ -24,7 +24,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 		 * @access public
 		 */
 		public function __construct() {
-				add_action( 'customize_register', array( $this, 'register' ) );
+			add_action( 'customize_register', array( $this, 'register' ) );
 		}
 
 		/**
@@ -85,7 +85,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 			$wp_customize->add_setting(
 				'api_cache_pro[default_timeout]',
 				array(
-					'default'           => 300,
+					'default'           => apply_filters( 'api_cache_default_timeout', 300 ),
 					'type'              => 'option',
 					'transport'         => 'refresh',
 					'sanitize_callback' => array( $this, 'sanitize_default_timeout' ),
@@ -102,7 +102,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 					'section'     => 'api_cache_pro_settings_section',
 					'settings'    => 'api_cache_pro[default_timeout]',
 					'input_attrs' => array(
-						'min'  => 0,
+						'min'  => 300, // Set Min to 300
 						'max'  => 604800, // Max of 7 Days in Seconds.
 						'step' => 1,
 					),
@@ -136,7 +136,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 		 */
 		public function sanitize_default_timeout( $default_timeout ) {
 
-			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 ) {
+			if ( is_numeric( $default_timeout ) && $default_timeout <= 604800 && $default_timeout >= 300  ) {
 
 				// Flush Cache to respect new timeouts.
 				$cache = new API_CACHE_PRO();
@@ -151,6 +151,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 		}
 	}
 
+	// Load to Customizer.
 	new API_Cache_Pro_Customizer();
 
 }
