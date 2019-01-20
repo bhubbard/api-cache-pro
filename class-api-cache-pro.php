@@ -183,7 +183,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
 
 				// Display Cache Timout.
-				$display_cache_timeout = apply_filters( 'api_cache_pro_timeout_header', true );
+				$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
 
 				if ( null !== $cache_timeout && true === $display_cache_timeout ) {
 
@@ -194,14 +194,14 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
 					$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
 
-					// Send Cache Timeout Header.
+					// Send Cache Expires Header.
 					if ( null !== $transient_timeout ) {
-						$server->send_header( 'X-API-CACHE-PRO-TIMEOUT', $transient_timeout );
+						$server->send_header( 'X-API-CACHE-PRO-EXPIRES', $transient_timeout );
 					}
 
-					// Send Cache Timeout Diff Header.
+					// Send Cache Expires Diff Header.
 					if ( null !== $timeout_diff ) {
-						$server->send_header( 'X-API-CACHE-PRO-TIMEOUT-DIFF', $timeout_diff );
+						$server->send_header( 'X-API-CACHE-PRO-EXPIRES-DIFF', $timeout_diff );
 					}
 				}
 			} else {
