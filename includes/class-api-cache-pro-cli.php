@@ -5,6 +5,9 @@
  * @package api-cache-pro
  */
 
+// Exit if accessed directly.
+defined( 'ABSPATH' ) || exit;
+
 if ( defined( 'WP_CLI' ) && WP_CLI ) {
 
 	if ( ! class_exists( 'API_Cache_Pro_CLI' ) ) {

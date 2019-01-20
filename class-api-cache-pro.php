@@ -111,8 +111,14 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Get Request URI.
 			$request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
 
+			// Set Cache Param.
+			$request->set_param( 'cache', true );
+
 			// Timeouts.
 			$timeout = $this->get_timeout();
+
+			$endpoint = $request->get_route();
+			$method   = $request->get_method();
 
 			// Set Cache Key if we have a Request URI.
 			if ( null !== $request_uri || '' !== $request_uri || ! empty( $request_uri ) ) {
@@ -122,7 +128,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			}
 
 			// Check if Response is Error.
-			if ( ! is_wp_error( $response ) ) {
+			if ( ! is_wp_error( $response ) || 'disabled' !== $request->get_param( 'cache' ) ) {
 
 				// Check for Cache Key.
 				if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
@@ -178,6 +184,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Get Request URI.
 			$request_uri = esc_url( $_SERVER['REQUEST_URI'] ) ?? null;
 
+			// Set Display Cache Header Filter.
+			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
+
 			// Get Path & Method.
 			$path   = $request->get_route() ?? null;
 			$method = $request->get_method() ?? 'GET';
@@ -203,24 +212,23 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			if ( ! empty( $cache_key ) || '' !== $cache_key || null !== $cache_key ) {
 				$cache_results = get_transient( $cache_key );
 			} else {
-				$cache_results = false;
+				$cache_results = null;
 			}
-
-			// Set Display Cache Header Filter.
-			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
 
 			// Check Cache Results.
 			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
 
 				// Send Header - Cached.
-				if ( true === $display_cache_header ) {
+				if ( true === $display_cache_header && 'disabled' !== $request->get_param( 'cache' ) ) {
 					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'api-cache-pro' ) );
+				} else {
+					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'api-cache-pro' ) );
 				}
 
 				// Display Key Header.
 				$display_cache_key = apply_filters( 'api_cache_pro_key_header', true );
 
-				if ( true === $display_cache_key ) {
+				if ( true === $display_cache_key && 'disabled' !== $request->get_param( 'cache' ) ) {
 					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 				}
 
@@ -230,7 +238,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				// Display Cache Timout.
 				$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
 
-				if ( null !== $cache_timeout && true === $display_cache_timeout ) {
+				if ( null !== $cache_timeout && true === $display_cache_timeout && 'disabled' !== $request->get_param( 'cache' ) ) {
 
 					// Get WordPress Time Zone Settings.
 					$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
