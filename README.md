@@ -43,8 +43,8 @@ This plugin offers several filters so you can disable these headers:
 | `api_cache_pro_expires_header` | boolean | true
 | `api_cache_pro_expires_diff_header` | boolean | true
 | `api_cache_pro_control_header` | boolean | true
-| `api_cache_pro_max_age` | integer | Default Timeout or 300
-| `api_cache_pro_s_max_age` | integer | Default Timeout or 300
+| `api_cache_pro_max_age` | integer | Default Timeout or 300 (5 Minutes)
+| `api_cache_pro_s_max_age` | integer | Default Timeout or 300 (5 Minutes)
 
 You can use these filters to disable any of the headers. Here is an example to disable the Key Header.
 
