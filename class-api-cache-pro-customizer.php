@@ -42,8 +42,8 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 					'priority'       => 500,
 					'capability'     => 'manage_options',
 					'theme_supports' => '',
-					'title'          => __( 'API Cache Pro', 'wp-rest-api-cache' ),
-					'description'    => __( 'Configure caching for the WordPress Rest API.', 'wp-rest-api-cache' ),
+					'title'          => __( 'API Cache Pro', 'api-cache-pro' ),
+					'description'    => __( 'Configure caching for the WordPress Rest API.', 'api-cache-pro' ),
 				)
 			);
 
@@ -51,8 +51,8 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 			$wp_customize->add_section(
 				'api_cache_pro_settings_section',
 				array(
-					'title'       => __( 'General Settings', 'wp-rest-api-cache' ),
-					'description' => __( 'Fill out the following cache settings for rest api.', 'wp-rest-api-cache' ),
+					'title'       => __( 'General Settings', 'api-cache-pro' ),
+					'description' => __( 'Fill out the following cache settings for rest api.', 'api-cache-pro' ),
 					'priority'    => 500,
 					'panel'       => 'api_cache_pro_panel',
 				)
@@ -73,8 +73,8 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 			$wp_customize->add_control(
 				'api_cache_pro_disable',
 				array(
-					'label'       => __( 'Disable Cache', 'wp-rest-api-cache' ),
-					'description' => __( 'Check this box if you wish to disable the WP Rest API Cache. All current cache will be cleared if enabled.', 'wp-rest-api-cache' ),
+					'label'       => __( 'Disable Cache', 'api-cache-pro' ),
+					'description' => __( 'Check this box if you wish to disable the WP Rest API Cache. All current cache will be cleared if enabled.', 'api-cache-pro' ),
 					'type'        => 'checkbox',
 					'section'     => 'api_cache_pro_settings_section',
 					'settings'    => 'api_cache_pro[disable]',
@@ -96,8 +96,8 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 			$wp_customize->add_control(
 				'api_cache_pro_default_timeout',
 				array(
-					'label'       => __( 'Default Timeout', 'wp-rest-api-cache' ),
-					'description' => __( 'Set the default timeout in seconds. All current cache will be cleared if updated. <br /><br /> Default: 300 (5 Minutes) <br /> Max: 604800 (7 Days)', 'wp-rest-api-cache' ),
+					'label'       => __( 'Default Timeout', 'api-cache-pro' ),
+					'description' => __( 'Set the default timeout in seconds. All current cache will be cleared if updated. <br /><br /> Default: 300 (5 Minutes) <br /> Max: 604800 (7 Days)', 'api-cache-pro' ),
 					'type'        => 'number',
 					'section'     => 'api_cache_pro_settings_section',
 					'settings'    => 'api_cache_pro[default_timeout]',
@@ -145,7 +145,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 				return $default_timeout;
 
 			} else {
-				return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'wp-rest-api-cache' ) );
+				return new WP_Error( 'invalid', __( 'You must supply a number no greater than the max default timeout allowed.', 'api-cache-pro' ) );
 			}
 
 		}
