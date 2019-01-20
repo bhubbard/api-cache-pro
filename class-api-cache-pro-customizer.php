@@ -42,8 +42,8 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 					'priority'       => 500,
 					'capability'     => 'manage_options',
 					'theme_supports' => '',
-					'title'          => __( 'Rest API Cache', 'wp-rest-api-cache' ),
-					'description'    => __( 'Set Rest API Cache.', 'wp-rest-api-cache' ),
+					'title'          => __( 'API Cache Pro', 'wp-rest-api-cache' ),
+					'description'    => __( 'Configure caching for the WordPress Rest API.', 'wp-rest-api-cache' ),
 				)
 			);
 
