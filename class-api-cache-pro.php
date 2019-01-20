@@ -89,10 +89,10 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function get_cache_key( $request_uri ) {
 
-			if ( ! empty( $request_uri ) || null !== $request_uri || '' !== $request_uri ) {
-				$cache_key = apply_filters( 'api_cache_pro_key', 'api_cache_pro_' . md5( $request_uri ) );
+			if ( ! empty( $request_uri ) || null !== $request_uri || '' !== $request_uri || false !== $request_uri ) {
+				$cache_key = apply_filters( 'api_cache_pro_key', 'api_cache_pro_' . md5( $request_uri ) ) ?? false;
 			} else {
-				return new WP_Error( 'missing_request_uri', __( 'Please provide the Request URI.', 'api-cache-pro' ) );
+				$cache_key = false;
 			}
 
 			return $cache_key;
@@ -115,57 +115,74 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$request->set_param( 'cache', true );
 
 			// Check if Response is Error.
-			if ( is_wp_error( $response ) || 'disabled' === $request->get_param( 'cache' ) ) {
+			if ( is_wp_error( $response ) ) {
 				return $response;
 			}
-
-			// Timeouts.
-			$timeout = $this->get_timeout();
 
 			$endpoint = $request->get_route();
 			$method   = $request->get_method();
 
 			// Set Cache Key if we have a Request URI.
-			$cache_key = $this->get_cache_key( $request_uri ) ?? null;
+			if ( ! is_wp_error( $response ) ) {
+				$cache_key = $this->get_cache_key( $request_uri ) ?? null;
+			}
 
-			if ( empty( $cache_key ) || null === $cache_key || '' === $cache_key ) {
+			// Return Response if no Cache Key.
+			if ( empty( $cache_key ) || null === $cache_key || '' === $cache_key || false === $cache_key ) {
 				return $response;
 			}
 
-				// Check for Cache Key.
-			if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
+			// Get Cache Results.
+			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 
-				// Get Cache from Transient.
-				$cache_results = $this->get_cache_results( $cache_key ) ?? false;
+			// Check Cache Results.
+			if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) || null === $cache_results ) {
 
-				// Check Transient.
-				if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) || null === $cache_results ) {
+				$save_cache = $this->set_cache( $cache_key, $response );
 
-					if ( null !== $response || '' !== $response || ! empty( $response ) ) {
-						$result = $response->get_data() ?? '';
-
-					} else {
-						$result = null;
-					}
-
-					// Set Transient.
-					if ( ! empty( $result ) || null !== $result || '' !== $result ) {
-						$set_cache = set_transient( $cache_key, $result, $timeout );
-					}
-
-					// Return Response - Cache Not Ready.
-					return $response;
-
-				} else {
-
-					// Return Cache Results.
+				// Return Response - Cache Not Ready.
+				if ( true === $save_cache ) {
+					$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 					return $cache_results;
-
+				} else {
+					return $response;
 				}
 			} else {
-				// Return Response - No Cache Results.
+
+				// Return Cache Results.
+				return $cache_results;
+
+			}
+
+		}
+
+
+		/**
+		 * Set Cache.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 * @param mixed $response Response.
+		 */
+		public function set_cache( $cache_key, $response ) {
+
+			if ( is_wp_error( $response ) ) {
 				return $response;
 			}
+
+			if ( null !== $response || '' !== $response || ! empty( $response ) || false !== $response ) {
+				$result = $response->get_data() ?? null;
+			} else {
+				$result = null;
+			}
+
+				// Set Transient.
+			if ( ! empty( $result ) || null !== $result || '' !== $result || false !== $result || false !== $response ) {
+				$timeout   = $this->get_timeout() ?? 300; // Get Timeout.
+				$set_cache = set_transient( $cache_key, $result, $timeout );
+			}
+
+				return $result;
 
 		}
 
@@ -223,7 +240,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			}
 
 			// Get Cache Key.
-			$cache_key = $this->get_cache_key( $request_uri ) ?? '';
+			if ( ! is_wp_error( $response ) ) {
+				$cache_key = $this->get_cache_key( $request_uri ) ?? null;
+			}
 
 			// Check for Cache from Transient.
 			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
@@ -239,11 +258,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				}
 
 				// Display Key Header.
-				$display_cache_key = apply_filters( 'api_cache_pro_key_header', true );
-
-				if ( true === $display_cache_key && 'disabled' !== $request->get_param( 'cache' ) ) {
-					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
-				}
+				$key_headers = $this->display_key_headers( $cache_key, $server, $request );
 
 				// Send Expire Headers.
 				$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
@@ -255,6 +270,27 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				}
 			}
 
+		}
+
+		/**
+		 * Display Key Headers.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 * @param mixed $server Server.
+		 * @param mixed $request Request.
+		 */
+		public function display_key_headers( $cache_key, $server, $request ) {
+
+			$display_cache_key = apply_filters( 'api_cache_pro_key_header', true );
+
+			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
+
+			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
+				if ( true === $display_cache_key && 'disabled' !== $request->get_param( 'cache' ) ) {
+					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
+				}
+			}
 		}
 
 		/**
