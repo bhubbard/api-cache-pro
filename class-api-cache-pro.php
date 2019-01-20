@@ -30,7 +30,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 
 			$enable_customizer = apply_filters( 'api_cache_pro_customizer', true );
 
-			if( true === $enable_customizer ) {
+			if ( true === $enable_customizer || null !== $enable_customizer ) {
 				// Include Our Customizer Settings.
 				include_once 'class-api-cache-pro-customizer.php';
 			}
@@ -103,32 +103,42 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			// Timeouts.
 			$timeout = $this->get_timeout();
 
-			if ( null !== $request_uri ) {
+			if ( null !== $request_uri || '' !== $request_uri || ! empty( $request_uri ) ) {
 				$cache_key = $this->cache_key( $request_uri ) ?? null;
 			} else {
-				$cache_key = null;
 				return $response;
 			}
 
-			if ( null !== $cache_key ) {
-				$cache_results = get_transient( $cache_key );
+			if ( ! is_wp_error( $response ) ) {
 
-				// Check Transient.
-				if ( false === $cache_results ) {
+				if ( null !== $cache_key || '' !== $cache_key || ! empty( $cache_key ) ) {
 
-					$result = $response->get_data();
+					$cache_results = get_transient( $cache_key );
 
-					// Set Transient.
-					if ( ! empty( $result ) || null !== $result ) {
-						$set_cache = set_transient( $cache_key, $result, $timeout );
+					// Check Transient.
+					if ( false === $cache_results || '' === $cache_results || empty( $cache_results ) ) {
+
+						if ( null !== $response || '' !== $response || ! empty( $response ) ) {
+							$result = $response->get_data() ?? '';
+
+						} else {
+							$result = null;
+						}
+
+						// Set Transient.
+						if ( ! empty( $result ) || null !== $result || '' !== $result ) {
+							$set_cache = set_transient( $cache_key, $result, $timeout );
+						}
+
+						return $response;
+
+					} else {
+
+						return $cache_results;
+
 					}
-
-					return $response;
-
 				} else {
-
-					return $cache_results;
-
+					return $response;
 				}
 			} else {
 				return $response;
