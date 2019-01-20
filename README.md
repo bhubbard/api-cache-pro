@@ -69,6 +69,14 @@ The cache will automatically get cleared if you do any of the following:
 * Update any post, page or custom post type.
 * Deactivate or Uninstall the plugin
 
+## WP-CLI Support
+
+*API Cache Pro* offers wp-cli support to clear cache with the following command:
+
+```
+wp api-cache-pro delete
+```
+
 ## Installation ##
 
 1. Copy the `api-cache-pro` folder into your `wp-content/plugins` folder
