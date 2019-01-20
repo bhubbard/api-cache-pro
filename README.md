@@ -33,7 +33,16 @@ X-API-CACHE-PRO-KEY: rest_api_cache_78be25416f69cd3a885dcf14017a0691
 * **X-API-CACHE-PRO-EXPIRES-DIFF** - Displays the difference from current time to the time cache is set to expire. 
 * **X-API-CACHE-PRO-KEY** - Displays the key used for the cache.
 
-You can use several filters to disable these headers:
+This plugin offers several filters so you can disable these headers:
+
+```
+api_cache_pro_header
+api_cache_pro_key_header
+api_cache_pro_expires_header
+api_cache_pro_expires_diff_header
+```
+
+You can use these filters to disable any of the headers. Here is an example to disable the Key Header.
 
 ```php
 /**

@@ -167,13 +167,18 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				$cache_results = false;
 			}
 
+			// Set Display Cache Header Filter.
+			$display_cache_header = apply_filters( 'api_cache_pro_header', true );
+
 			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results ) {
 
 				// Send Header - Cached.
-				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'wp-rest-api-cache' ) );
+				if ( true === $display_cache_header ) {
+					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Cached', 'wp-rest-api-cache' ) );
+				}
 
 				// Display Key Header.
-				$display_cache_key  = apply_filters( 'api_cache_pro_key_header', true );
+				$display_cache_key = apply_filters( 'api_cache_pro_key_header', true );
 
 				if ( true === $display_cache_key ) {
 					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
@@ -200,13 +205,16 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					}
 
 					// Send Cache Expires Diff Header.
-					if ( null !== $timeout_diff ) {
+					$display_cache_expires_diff = apply_filters( 'api_cache_pro_expires_diff_header', true );
+					if ( null !== $timeout_diff && true === $display_cache_expires_diff ) {
 						$server->send_header( 'X-API-CACHE-PRO-EXPIRES-DIFF', $timeout_diff );
 					}
 				}
 			} else {
 				// Send Header - Not Cached.
-				$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'wp-rest-api-cache' ) );
+				if ( true === $display_cache_header ) {
+					$server->send_header( 'X-API-CACHE-PRO', esc_html( 'Not Cached', 'wp-rest-api-cache' ) );
+				}
 			}
 
 		}
