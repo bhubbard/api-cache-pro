@@ -172,6 +172,24 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		}
 
 		/**
+		 * Get Cache Results.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 */
+		public function get_cache_results( $cache_key ) {
+
+			if ( ! empty( $cache_key ) || '' !== $cache_key || null !== $cache_key || false !== $cache_key ) {
+				$cache_results = get_transient( $cache_key ) ?? false;
+			} else {
+				$cache_results = false;
+			}
+
+			return $cache_results;
+
+		}
+
+		/**
 		 * Cache Request Headers.
 		 *
 		 * @access public
@@ -209,11 +227,7 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 			$cache_key = $this->cache_key( $request_uri ) ?? '';
 
 			// Check for Cache from Transient.
-			if ( ! empty( $cache_key ) || '' !== $cache_key || null !== $cache_key ) {
-				$cache_results = get_transient( $cache_key );
-			} else {
-				$cache_results = null;
-			}
+			$cache_results = $this->get_cache_results( $cache_key ) ?? false;
 
 			// Check Cache Results.
 			if ( false !== $cache_results || '' !== $cache_results || null !== $cache_results || ! empty( $cache_results ) ) {
@@ -232,32 +246,9 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 					$server->send_header( 'X-API-CACHE-PRO-KEY', $cache_key );
 				}
 
-				// Get Transient Timeout.
-				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
+				// Send Expire Headers.
+				$expire_headers = $this->display_expires_headers( $cache_key, $server, $request );
 
-				// Display Cache Timout.
-				$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
-
-				if ( null !== $cache_timeout && true === $display_cache_timeout && 'disabled' !== $request->get_param( 'cache' ) ) {
-
-					// Get WordPress Time Zone Settings.
-					$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
-
-					// Set Transient Timeout & Diff.
-					$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
-					$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
-
-					// Send Cache Expires Header.
-					if ( null !== $transient_timeout ) {
-						$server->send_header( 'X-API-CACHE-PRO-EXPIRES', $transient_timeout );
-					}
-
-					// Send Cache Expires Diff Header.
-					$display_cache_expires_diff = apply_filters( 'api_cache_pro_expires_diff_header', true );
-					if ( null !== $timeout_diff && true === $display_cache_expires_diff ) {
-						$server->send_header( 'X-API-CACHE-PRO-EXPIRES-DIFF', $timeout_diff );
-					}
-				}
 			} else {
 				// Send Header - Not Cached.
 				if ( true === $display_cache_header ) {
@@ -265,6 +256,44 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 				}
 			}
 
+		}
+
+		/**
+		 * Display Expire Headers.
+		 *
+		 * @access public
+		 * @param mixed $cache_key Cache Key.
+		 * @param mixed $server Server.
+		 * @param mixed $request Request.
+		 */
+		public function display_expires_headers( $cache_key, $server, $request ) {
+
+				// Get Transient Timeout.
+				$cache_timeout = $this->get_cache_timeout( $cache_key ) ?? null;
+
+				// Display Cache Timout.
+				$display_cache_timeout = apply_filters( 'api_cache_pro_expires_header', true );
+
+			if ( null !== $cache_timeout && true === $display_cache_timeout && 'disabled' !== $request->get_param( 'cache' ) ) {
+
+				// Get WordPress Time Zone Settings.
+				$gmt_offset = get_option( 'gmt_offset' ) ?? 0;
+
+				// Set Transient Timeout & Diff.
+				$transient_timeout = date( 'F j, Y, g:i A T', current_time( $cache_timeout, $gmt_offset ) ) ?? null;
+				$timeout_diff      = human_time_diff( current_time( $cache_timeout, $gmt_offset ), current_time( 'timestamp', $gmt_offset ) ) ?? null;
+
+				// Send Cache Expires Header.
+				if ( null !== $transient_timeout ) {
+					$server->send_header( 'X-API-CACHE-PRO-EXPIRES', $transient_timeout );
+				}
+
+				// Send Cache Expires Diff Header.
+				$display_cache_expires_diff = apply_filters( 'api_cache_pro_expires_diff_header', true );
+				if ( null !== $timeout_diff && true === $display_cache_expires_diff ) {
+					$server->send_header( 'X-API-CACHE-PRO-EXPIRES-DIFF', $timeout_diff );
+				}
+			}
 		}
 
 		/**
