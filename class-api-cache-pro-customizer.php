@@ -37,7 +37,7 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 
 			// Rest API Cache Panel.
 			$wp_customize->add_panel(
-				'rest_api_cache_panel',
+				'api_cache_pro_panel',
 				array(
 					'priority'       => 500,
 					'capability'     => 'manage_options',
@@ -49,18 +49,18 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 
 			// Settings Section.
 			$wp_customize->add_section(
-				'rest_api_cache_settings_section',
+				'api_cache_pro_settings_section',
 				array(
 					'title'       => __( 'General Settings', 'wp-rest-api-cache' ),
 					'description' => __( 'Fill out the following cache settings for rest api.', 'wp-rest-api-cache' ),
 					'priority'    => 500,
-					'panel'       => 'rest_api_cache_panel',
+					'panel'       => 'api_cache_pro_panel',
 				)
 			);
 
 			// Disable Settings.
 			$wp_customize->add_setting(
-				'rest_api_cache[disable]',
+				'api_cache_pro[disable]',
 				array(
 					'default'           => false,
 					'type'              => 'option',
@@ -71,19 +71,19 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 
 			// Disable Controls.
 			$wp_customize->add_control(
-				'rest_api_cache_disable',
+				'api_cache_pro_disable',
 				array(
 					'label'       => __( 'Disable Cache', 'wp-rest-api-cache' ),
 					'description' => __( 'Check this box if you wish to disable the WP Rest API Cache. All current cache will be cleared if enabled.', 'wp-rest-api-cache' ),
 					'type'        => 'checkbox',
-					'section'     => 'rest_api_cache_settings_section',
-					'settings'    => 'rest_api_cache[disable]',
+					'section'     => 'api_cache_pro_settings_section',
+					'settings'    => 'api_cache_pro[disable]',
 				)
 			);
 
 			// Timeout Settings.
 			$wp_customize->add_setting(
-				'rest_api_cache[default_timeout]',
+				'api_cache_pro[default_timeout]',
 				array(
 					'default'           => 300,
 					'type'              => 'option',
@@ -94,13 +94,13 @@ if ( ! class_exists( 'API_Cache_Pro_Customizer' ) ) {
 
 			// Timeout Controls.
 			$wp_customize->add_control(
-				'rest_api_cache_default_timeout',
+				'api_cache_pro_default_timeout',
 				array(
 					'label'       => __( 'Default Timeout', 'wp-rest-api-cache' ),
 					'description' => __( 'Set the default timeout in seconds. All current cache will be cleared if updated. <br /><br /> Default: 300 (5 Minutes) <br /> Max: 604800 (7 Days)', 'wp-rest-api-cache' ),
 					'type'        => 'number',
-					'section'     => 'rest_api_cache_settings_section',
-					'settings'    => 'rest_api_cache[default_timeout]',
+					'section'     => 'api_cache_pro_settings_section',
+					'settings'    => 'api_cache_pro[default_timeout]',
 					'input_attrs' => array(
 						'min'  => 0,
 						'max'  => 604800, // Max of 7 Days in Seconds.

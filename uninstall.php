@@ -9,7 +9,7 @@
 defined( 'ABSPATH' ) || exit;
 
 // Delete Our Options.
-delete_option( 'rest_api_cache' );
+delete_option( 'api_cache_pro' );
 
 // Delete All Cache.
 $rest_api_cache = new API_CACHE_PRO();
