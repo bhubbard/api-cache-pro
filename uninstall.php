@@ -11,6 +11,21 @@ defined( 'ABSPATH' ) || exit;
 // Delete Our Options.
 delete_option( 'api_cache_pro' );
 
-// Delete All Cache.
-$rest_api_cache = new API_CACHE_PRO();
-$rest_api_cache->delete_all_cache();
+	// WPDB.
+	global $wpdb;
+
+	// Delete All Cache.
+	$wpdb->query(
+				$wpdb->prepare(
+					"DELETE FROM $wpdb->options WHERE option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s OR option_name LIKE %s",
+					'_transient_api_cache_pro_%',
+					'_transient_timeout_api_cache_pro_%',
+					'_site_transient_api_cache_pro_%',
+					'_site_transient_timeout_api_cache_pro_%'
+				)
+			);
+
+	// Cache Flush.
+	wp_cache_flush();
+
+

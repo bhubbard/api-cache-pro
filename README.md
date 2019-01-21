@@ -9,7 +9,7 @@ A simple plugin to cache WP Rest API Requests.
 **License:** GPLv3 or later  
 **License URI:** http://www.gnu.org/licenses/gpl-3.0.html  
 
-## Description ##
+## Description
 
 This plugin enables caching for the WordPress REST API to improve performance. Once enabled you can modify the basic settings via the Customizer. 
 
