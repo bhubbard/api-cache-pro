@@ -37,12 +37,4 @@ class API_Cache_Pro_File_Checks extends WP_UnitTestCase {
 		$this->assertFileExists( 'class-api-cache-pro.php' );
 	}
 
-	/**
-	 * Verify API Cache Pro Customizer File Exists.
-	 *
-	 * @access public
-	 */
-	public function test_class_api_cache_pro_customizer_exists() {
-		$this->assertFileExists( 'class-api-cache-pro.php' );
-	}
 }
