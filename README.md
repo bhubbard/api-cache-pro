@@ -1,6 +1,8 @@
 # API Cache Pro #
 A simple plugin to cache WP Rest API Requests.
 
+[![Build Status](https://travis-ci.com/bhubbard/api-cache-pro.svg?token=kkcazsQEFZQ5dR7MwDsz&branch=master)](https://travis-ci.com/bhubbard/api-cache-pro)
+
 **Contributors:** [bhubbard](https://profiles.wordpress.org/bhubbard)  
 **Tags:** wp rest api, rest api, wp api, api, json, json api  
 **Requires at least:** 5.0  
