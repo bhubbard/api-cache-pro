@@ -4,7 +4,7 @@
  * Description: A simple plugin to cache WP Rest API Requests.
  * Author: Brandon Hubbard
  * Author URI: http://github.com/bhubbard
- * Version: 0.0.3
+ * Version: 0.0.7
  * Text Domain: api-cache-pro
  * Domain Path: /languages/
  * Plugin URI: https://github.com/bhubbard/blah
@@ -29,6 +29,8 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 * @access public
 		 */
 		public function __construct() {
+
+			// A note
 
 			// Include Customizer Support.
 			include_once 'includes/class-api-cache-pro-customizer.php';
