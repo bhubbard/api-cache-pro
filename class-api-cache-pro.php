@@ -30,6 +30,8 @@ if ( ! class_exists( 'API_CACHE_PRO' ) ) {
 		 */
 		public function __construct() {
 
+			// A note
+
 			// Include Customizer Support.
 			include_once 'includes/class-api-cache-pro-customizer.php';
 
